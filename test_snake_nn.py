@@ -34,7 +34,7 @@ def train_model(epochs):
             reward = game_instance.step(action)
             
             # Create a target tensor for the loss calculation
-            target = torch.tensor([reward], dtype=torch.float32)  # This is simplistic; adjust based on your task
+            target = torch.tensor([reward], dtype=torch.float32)
             
             # Compute the loss
             loss = criterion(action_scores[0, action], target)
@@ -49,4 +49,4 @@ def train_model(epochs):
         print(f"Epoch {epoch + 1}/{epochs}, Loss: {total_loss}")
 
 # Train the model
-train_model(epochs=100)
+train_model(epochs=500)

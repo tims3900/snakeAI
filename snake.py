@@ -1,12 +1,13 @@
 import random
 
 class game:
-    def __init__(self, grid_size=10):
-        self.grid_size = grid_size
+    def __init__(self, width=10, height=10):
+        self.width = width
+        self.height = height
         self.reset()
 
     def reset(self):
-        self.snake = [(self.grid_size//2, self.grid_size//2)] 
+        self.snake = [(self.width//2, self.height//2)] 
         self.direction = (0, 1)
         self.place_food()
         self.since_last = 0
@@ -14,14 +15,14 @@ class game:
 
     def place_food(self):
         while True:
-            self.food = (random.randint(0, self.grid_size - 1), 
-                         random.randint(0, self.grid_size - 1))
+            self.food = (random.randint(0, self.width- 1), 
+                         random.randint(0, self.height- 1))
             if self.food not in self.snake:
                 break
 
     def lost(self, head):
-        if (head[0] < 0 or head[0] >= self.grid_size or
-            head[1] < 0 or head[1] >= self.grid_size or
+        if (head[0] < 0 or head[0] >= self.width or
+            head[1] < 0 or head[1] >= self.height or
             head in self.snake):
             return True
         return False
@@ -37,7 +38,7 @@ class game:
         for dx, dy in directions:
             to_wall, to_food, to_self = 0, 0, 0
             x, y = head_x + dx, head_y + dy
-            while 0 <= x < self.grid_size and 0 <= y < self.grid_size:
+            while 0 <= x < self.width and 0 <= y < self.height:
                 to_wall += 1
                 if (x, y) == self.food:
                     to_food = to_wall
@@ -71,20 +72,20 @@ class game:
         
         if self.lost(new_head):
             self.game_over = True
-            return -1
+            return -5
 
         self.snake.insert(0, new_head)
 
         if new_head == self.food:
             self.place_food()
             self.since_last = 0
-            return 1
+            return 5
         else:
             self.snake.pop()
             self.since_last += 1
 
         # prevent starving
-        if self.since_last > self.grid_size * 2:
+        if self.since_last > self.height * 10:
             self.game_over = True
             return -10
 
